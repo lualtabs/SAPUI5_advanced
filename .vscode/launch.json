@@ -1,0 +1,48 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "pwa-node",
+      "request": "launch",
+      "name": "Launch Program",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "program": "${workspaceFolder}/Employees/webapp/controller/MainView.controller.js"
+    },
+    {
+      "type": "node-terminal",
+      "name": "Create JavaScript Debug Terminal",
+      "request": "launch",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "type": "pwa-node",
+      "name": "Run Current File",
+      "request": "launch",
+      "program": "${workspaceFolder}/Employees/webapp/controller/MainView.controller.js"
+    },
+    {
+      "name": "Run logali-Employees",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/logali-approuter/node_modules/@sap/html5-repo-mock/index.js",
+      "args": [
+        "--standalone",
+        "/logaligroupEmployees/index.html",
+        "--ui5",
+        "{\"version\":\".\"}"
+      ],
+      "cwd": "${workspaceFolder}/Employees",
+      "env": {
+        "PORT": "6004",
+        "MOCK_LOOKUP_DIRS": "[\"webapp\"]",
+        "run.config": "{\"handlerId\":\"ui5_run_config_handler_id\",\"runnableId\":\"/home/user/projects/logali/Employees\"}"
+      },
+      "envFile": "${workspaceFolder}/Employees/.env3",
+      "preLaunchTask": "Build logali"
+    }
+  ]
+}
