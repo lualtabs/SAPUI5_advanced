@@ -13,7 +13,7 @@ sap.ui.define([
         function onInit() {
             // Este modelo en js y no en XML logra ser dinámico, contra el modelo JSON que se recibe
             var oView = this.getView();
-        
+
             // Pasar al modelo los datos y además vincular la vista
             //oJSONModel.setData(oJSON);
             // @ts-ignore
@@ -66,25 +66,112 @@ sap.ui.define([
             sap.m.MessageToast.show(objectContext.PostalCode);
         };
 
-        function onShowCity(){
+        function onShowCity() {
             var oJSONModelConfig = this.getView().getModel("jsonModelConfig");
             oJSONModelConfig.setProperty("/visibleCity", true);
             oJSONModelConfig.setProperty("/visibleBtnShowCity", false);
             oJSONModelConfig.setProperty("/visibleBtnHideCity", true);
         };
 
-        function onHideCity(){
+        function onHideCity() {
             var oJSONModelConfig = this.getView().getModel("jsonModelConfig");
             oJSONModelConfig.setProperty("/visibleCity", false);
             oJSONModelConfig.setProperty("/visibleBtnShowCity", true);
             oJSONModelConfig.setProperty("/visibleBtnHideCity", false);
         };
 
+        function showOrders(oEvent) {
+            var ordersTable = this.getView().byId("ordersTable");
+
+            ordersTable.destroyItems();
+
+            var itemPressed = oEvent.getSource();
+            var oContext = itemPressed.getBindingContext("jsonEmployees");
+            var objectContext = oContext.getObject();
+
+            // Columna de Json Orders
+            var orders = objectContext.Orders;
+
+            var ordersItems = [];
+
+            for (var i in orders) {
+                ordersItems.push(new sap.m.ColumnListItem({
+                    cells: [
+                        new sap.m.Label({ text: orders[i].OrderID }),
+                        new sap.m.Label({ text: orders[i].Freight }),
+                        new sap.m.Label({ text: orders[i].ShipAddress })
+                    ]
+
+                }));
+            }
+
+            var newTable = new sap.m.Table({
+                with: "auto",
+                columns: [
+                    new sap.m.Column({ header: new sap.m.Label({ text: "{i18n>orderID}" }) }),
+                    new sap.m.Column({ header: new sap.m.Label({ text: "{i18n>freight}" }) }),
+                    new sap.m.Column({ header: new sap.m.Label({ text: "{i18n>shipAddress}" }) })
+                ],
+
+                items: ordersItems
+            }).addStyleClass("sapUiSmallMargin");
+
+            ordersTable.addItem(newTable);
+
+            // Nueva forma de implementar la tabla dinámica.
+            var newTableJSON = new sap.m.Table();
+            newTableJSON.setWidth("auto");
+            newTableJSON.addStyleClass("sapUiSmallMargin");
+
+            var columnOrderID = new sap.m.Column();
+            var labelOrderID = new sap.m.Label();
+            labelOrderID.bindProperty("text", "i18n>orderID");
+            columnOrderID.setHeader(labelOrderID);
+            newTableJSON.addColumn(columnOrderID);
+
+            var columnFreight = new sap.m.Column();
+            var labelFreight = new sap.m.Label();
+            labelFreight.bindProperty("text", "i18n>freight");
+            columnFreight.setHeader(labelFreight);
+            newTableJSON.addColumn(columnFreight);
+
+            var columnShipAddress = new sap.m.Column();
+            var labelShipAddress = new sap.m.Label();
+            labelShipAddress.bindProperty("text", "i18n>shipAddress");
+            columnShipAddress.setHeader(labelShipAddress);
+            newTableJSON.addColumn(columnShipAddress);
+
+            var ColumnListItem = new sap.m.ColumnListItem();
+
+            var cellOrderID = new sap.m.Label();
+            cellOrderID.bindProperty("text", "jsonEmployees>OrderID");
+            ColumnListItem.addCell(cellOrderID);
+
+            var cellFreight = new sap.m.Label();
+            cellFreight.bindProperty("text", "jsonEmployees>Freight");
+            ColumnListItem.addCell(cellFreight);
+
+            var cellShipAddress = new sap.m.Label();
+            cellShipAddress.bindProperty("text", "jsonEmployees>ShipAddress");
+            ColumnListItem.addCell(cellShipAddress);
+
+            var oBindingInfo = {
+                model: "jsonEmployees",
+                path: "Orders",
+                template: ColumnListItem
+            }
+
+            newTableJSON.bindAggregation("items", oBindingInfo);
+            newTableJSON.bindElement("jsonEmployees>" + oContext.getPath());
+
+            ordersTable.addItem(newTableJSON);
+        }
+
         var Main = Controller.extend("logaligroup.Employees.controller.MainView", {});
 
         Main.prototype.onValidate = function () {
             var inputEmployee = this.byId("inputEmployee");
-            // @ts-ignore
+            // @ts-ignore  
             var valueEmployee = inputEmployee.getValue();
             if (valueEmployee.length === 6) {
                 // @ts-ignore
@@ -105,5 +192,7 @@ sap.ui.define([
         Main.prototype.showPostalCode = showPostalCode;
         Main.prototype.onShowCity = onShowCity;
         Main.prototype.onHideCity = onHideCity;
+        Main.prototype.showOrders = showOrders;
+
         return Main;
     });
