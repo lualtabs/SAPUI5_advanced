@@ -11,30 +11,9 @@ sap.ui.define([
         "use strict";
 
         function onInit() {
-            // Este modelo en js y no en XML logra ser dinámico, contra el modelo JSON que se recibe
-            var oView = this.getView();
+            
+            this._bus = sap.ui.getCore().getEventBus();
 
-            // Pasar al modelo los datos y además vincular la vista
-            //oJSONModel.setData(oJSON);
-            // @ts-ignore
-            var oJSONModelEmpl = new sap.ui.model.json.JSONModel();
-            oJSONModelEmpl.loadData("./localService/mockdata/Employees.json", false);
-            oView.setModel(oJSONModelEmpl, "jsonEmployees");
-
-            var oJSONModelCountries = new sap.ui.model.json.JSONModel();
-            oJSONModelCountries.loadData("./localService/mockdata/Employees.json", false);
-            oView.setModel(oJSONModelCountries, "jsoncountries");
-
-            // nuevo modelo para ocultar o mostrar nuevos botones.
-            var oJSONModelConfig = new sap.ui.model.json.JSONModel({
-                visibleID: true,
-                visibleName: true,
-                visibleCountry: true,
-                visibleCity: false,
-                visibleBtnShowCity: true,
-                visibleBtnHideCity: false
-            });
-            oView.setModel(oJSONModelConfig, "jsonModelConfig");
         };
 
         function onFilter() {
@@ -99,9 +78,14 @@ sap.ui.define([
 
         function onCloseOrders(){
             this._oDialogOrders.close();
+        };
+
+        function showEmployee(oEvent){
+            var path = oEvent.getSource().getBindingContext("jsonEmployees").getPath();
+            this._bus.publish("flexible", "showEmployee", path);
         }
 
-        var Main = Controller.extend("logaligroup.Employees.controller.MainView", {});
+        var Main = Controller.extend("logaligroup.Employees.controller.MasterEmployee", {});
 
         Main.prototype.onValidate = function () {
             var inputEmployee = this.byId("inputEmployee");
@@ -127,7 +111,8 @@ sap.ui.define([
         Main.prototype.onShowCity = onShowCity;
         Main.prototype.onHideCity = onHideCity;
         Main.prototype.showOrders = showOrders;
-        Main.prototype.onCloseOrders =onCloseOrders
+        Main.prototype.onCloseOrders = onCloseOrders
+        Main.prototype.showEmployee = showEmployee
 
         return Main;
     });
