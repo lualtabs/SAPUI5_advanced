@@ -43,6 +43,10 @@ sap.ui.define([
             //modifica la segunda vista para mostrar al lado derecho repartiendo la pantalla
             this.getView().getModel("jsonLayout").setProperty("/ActiveKey", "TwoColumnsMidExpanded");
 
+            var incidenceModel= new sap.ui.model.json.JSONModel([]);
+            detailView.setModel(incidenceModel, "incidenceModel");
+            detailView.byId("tableIncidence").removeAllContent();
+
         }
 
     });
