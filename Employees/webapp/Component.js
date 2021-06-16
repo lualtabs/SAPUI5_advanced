@@ -25,6 +25,9 @@ sap.ui.define([
 
 			// set the device model
 			this.setModel(models.createDeviceModel(), "device");
-		}
+        },
+        
+        //Atribute
+        SapId: "lualta1g@gmail.com"
 	});
 });
