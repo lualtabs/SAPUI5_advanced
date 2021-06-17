@@ -28,6 +28,6 @@ sap.ui.define([
         },
         
         //Atribute
-        SapId: "lualta1g@gmail.com"
+        SapId: "lualta1@gmail.com"
 	});
 });
