@@ -19,7 +19,7 @@ sap.ui.define([
             oRouter.getRoute("RouteOrderDetails").attachPatternMatched(_onObjectMatched, this);
         },
 
-        onBack: function(){
+        onBack: function(oEvent){
             var oHistory = History.getInstance();
             var spreviousHash = oHistory.getPreviousHash();
 
@@ -30,6 +30,11 @@ sap.ui.define([
                 var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
                 oRouter.navTo("RouteMain", true);
             }
+        },
+
+        onClearSignature: function(oEvent){
+            var signature = this.byId("signature");
+            signature.clear();
         }
     });
 });
