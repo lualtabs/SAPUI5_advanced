@@ -6,7 +6,10 @@ sap.ui.define([
 ],
 	/**
      * @param {typeof sap.ui.core.mvc.Controller} Controller
+     * @param {typeof sap.ui.model.Filter} Filter
+     * @param {typeof sap.ui.model.FilterOperator} FilterOperator
      */
+
     function (Base, Filter, FilterOperator) {
         "use strict";
 
