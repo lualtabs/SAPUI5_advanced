@@ -16,15 +16,15 @@ sap.ui.define([
             //oJSONModel.setData(oJSON);
             // @ts-ignore
             var oJSONModelEmpl = new sap.ui.model.json.JSONModel();
-            oJSONModelEmpl.loadData("./localService/mockdata/Employees.json", false);
+            oJSONModelEmpl.loadData("./model/json/Employees.json", false);
             oView.setModel(oJSONModelEmpl, "jsonEmployees");
 
             var oJSONModelCountries = new sap.ui.model.json.JSONModel();
-            oJSONModelCountries.loadData("./localService/mockdata/Employees.json", false);
+            oJSONModelCountries.loadData("./model/json/Employees.json", false);
             oView.setModel(oJSONModelCountries, "jsoncountries");
 
             var oJSONModelLayout = new sap.ui.model.json.JSONModel();
-            oJSONModelLayout.loadData("./localService/mockdata/Layout.json", false);
+            oJSONModelLayout.loadData("./model/json/Layout.json", false);
             oView.setModel(oJSONModelLayout, "jsonLayout");
 
             // nuevo modelo para ocultar o mostrar nuevos botones.
